@@ -39,10 +39,21 @@ void f2() {
     munmap(t + 4 * 4096, 2 * 4096);
   }
 }
+
+void test_heap(int count) {
+  if (count == 1) return;
+
+  int* arr = (int*)malloc(1024 * 1024);
+  sleep(1);
+  test_heap(--count);
+  free(arr);
+}
+
 int main(int argc, char** argv) {
   printf("pid: %d\n", getpid());
   sleep(10);
   // f();
+  // test_heap(10);
   f2();
   return EXIT_SUCCESS;
 }
