@@ -41,7 +41,19 @@ void f2() {
 }
 
 void test_heap(int count) {
-  if (count == 1) return;
+  // signal(SIGSEGV, signal_callback_handler);
+
+  if (count == 1) {
+    char* t =
+        mmap(NULL, 10 * 4096, PROT_NONE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+
+    printf("%c\n", t[0]);
+    // t[0] = 'v';
+    // munmap(t + 4 * 4096, 2 * 4096);
+    sleep(10);
+
+    return;
+  }
 
   int* arr = (int*)malloc(1024 * 1024);
   sleep(1);
@@ -51,9 +63,11 @@ void test_heap(int count) {
 
 int main(int argc, char** argv) {
   printf("pid: %d\n", getpid());
-  sleep(10);
+  sleep(1);
   // f();
-  // test_heap(10);
-  f2();
+  test_heap(1);
+  sleep(10);
+
+  // f2();
   return EXIT_SUCCESS;
 }
